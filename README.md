@@ -1,16 +1,17 @@
-# React + Vite
+# FamilyHub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+FamilyHub is a comprehensive family planner dashboard designed to centralize household coordination and reduce the mental load of managing daily activities.
 
-Currently, two official plugins are available:
+## Project Overview
+This application serves as a central hub for families to manage their busy lives. It provides a unified interface for tracking schedules, organizing children's activities, and managing shared shopping lists. The goal is to improve communication and organization within a household through a simple, intuitive web interface.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Core Features
+- **Centralized Dashboard**: A high-level overview of daily events and tasks.
+- **Activity Tracking**: Manage and assign extracurricular activities for children.
+- **Family Calendar**: A shared space to keep track of important appointments and milestones.
+- **Shopping Lists**: Collaborative lists for household essentials.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+- **Frontend**: React.js with Vite
+- **Icons**: Lucide-React
+- **Styling**: Modern CSS with Flexbox/Grid
