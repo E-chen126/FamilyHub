@@ -26,21 +26,25 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab 
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
   // create new event or activity
+ 
   const handleCreate = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+
     const newItem = {
       id: Date.now(),
       title: formData.get('title'),
       date: formData.get('date'),
-      startTime: formData.get('startTime'),
-      endTime: modalType === 'activity' ? formData.get('endTime') : null,
+      
+      startTime: formData.get('startTime') || null, 
+      endTime: modalType === 'activity' ? (formData.get('endTime') || null) : null,
+      
       member: formData.get('member'),
-      color: modalType === 'event' ? "#a855f7" : "#6366f1"
+      color: modalType === 'event' ? "#8e53ff" : "#febc2e"
     };
 
     if (modalType === 'event') {
-      setEvents([...events, newItem]); 
+      setEvents([...events, newItem]);
     } else {
       setTasks([...tasks, newItem]);
     }
@@ -90,18 +94,44 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab 
         <section className="column-section">
           <div className="section-header">
             <h2 className="clickable-title" onClick={() => setActiveTab('Activities')}>Children Activities</h2>
-            <button className="add-btn-small" onClick={() => { setModalType('activity'); setShowModal(true); }}><Plus size={14} /> Add</button>
+            <button className="add-btn-small" onClick={() => { setModalType('activity'); setShowModal(true); }}>
+              <Plus size={14} /> Add
+            </button>
           </div>
+
           <div className="item-list">
-            {tasks.map(item => (
-              <div key={item.id} className="task-card" style={{ borderLeft: `5px solid ${item.color}` }}>
-                <div className="check-circle" onClick={() => setTasks(tasks.filter(t => t.id !== item.id))}></div>
-                <div className="task-details">
-                  <h4>{item.title}</h4>
-                  <p>📅 {item.date} • ⏰ {item.startTime} - {item.endTime} • 👤 {item.member}</p>
-                </div>
+            {tasks.length === 0 ? (
+              <div className="empty-state">
+                <CheckSquare size={48} />
+                <p>No activities planned for kids</p>
               </div>
-            ))}
+            ) : (
+              tasks.map(item => (
+                <div key={item.id} className="task-card" style={{ borderLeft: `5px solid ${item.color}` }}>
+                  <div className="check-circle" onClick={() => setTasks(tasks.filter(t => t.id !== item.id))}></div>
+                 
+                  <div className="task-details">
+                    <h4>{item.title}</h4>
+                    <p>
+                      <Calendar size={14} className="sub-icon" />
+                      <span>{item.date}</span>
+
+                     
+                      {item.startTime && (
+                        <>
+                          <span className="separator"> @ </span>
+                          <span>{item.startTime} {item.endTime ? `- ${item.endTime}` : ''}</span>
+                        </>
+                      )}
+
+                      <span className="separator"> • </span>
+                      <Users size={14} className="sub-icon" />
+                      <span>{item.member}</span>
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </section>
       </div>
@@ -118,8 +148,11 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab 
               <div className="input-group"><label>Title</label><input name="title" required /></div>
               <div className="input-group"><label>Date</label><input type="date" name="date" required /></div>
               <div className="input-row">
-                <div className="input-group"><label>Start Time</label><input type="time" name="startTime" required /></div>
-                {modalType === 'activity' && <div className="input-group"><label>End Time</label><input type="time" name="endTime" required /></div>}
+                <div className="input-group">
+                  <label>Start Time</label>
+                  <input type="time" name="startTime"/>
+                  </div>
+                {modalType === 'activity' && <div className="input-group"><label>End Time</label><input type="time" name="endTime" /></div>}
               </div>
               <div className="input-group">
                 <label>Assigned To</label>
