@@ -28,7 +28,11 @@ body {
   min-height: 100vh;
 }
 
-/* Sidebar */
+
+/* ============================================================
+   1. 桌面端核心样式 (Desktop - Default) 
+   ============================================================ */
+
 .sidebar {
   width: 260px;
   background: white;
@@ -40,14 +44,29 @@ body {
   height: 100vh;
   position: sticky;
   top: 0;
+  transition: all 0.3s ease;
+  z-index: 1001;
+  /* 确保层级足够高 */
 }
 
 .brand {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   margin-bottom: 40px;
-  padding-left: 10px;
+  position: relative;
+}
+
+/* 🌟 控制 Sidebar 内部不同 Logo 的显隐 */
+.mobile-only-brand {
+  display: none;
+}
+
+.desktop-only-logo {
+  width: 200px;
+  height: auto;
+  object-fit: contain;
 }
 
 .nav-list {
@@ -72,27 +91,169 @@ body {
   width: 100%;
 }
 
-.nav-item:hover {
-  background: #f1f5f9;
-  color: var(--text-main);
-}
-
 .nav-item.active {
   background: var(--primary-light);
   color: var(--primary);
   font-weight: 600;
 }
 
-.nav-icon {
-  flex-shrink: 0;
+/* 🌟 桌面端彻底隐藏移动组件 */
+.mobile-top-bar,
+.mobile-close-btn,
+.mobile-hamburger-trigger,
+.menu-overlay {
+  display: none !important;
 }
 
-.sidebar-footer {
-  font-size: 13px;
-  color: var(--text-muted);
-  padding: 20px 10px 0;
-  border-top: 1px solid #f1f5f9;
+/* ============================================================
+   📱 移动端/平板端响应式样式 (Max-width: 1024px)
+   ============================================================ */
+
+@media (max-width: 1024px) {
+
+  /* 1. 顶部导航条 */
+  .mobile-top-bar {
+    display: flex !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: white;
+    padding: 0 20px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f1f5f9;
+    z-index: 1000;
+  }
+
+  .mobile-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mobile-logo-icon {
+    height: 32px !important;
+    width: auto;
+  }
+
+  .mobile-logo-text {
+    display: block;
+    font-size: 19px;
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  .mobile-hamburger-trigger {
+    display: flex !important;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* 2. 🌟 核心修复：Sidebar 变身下拉帘 */
+  .sidebar {
+    position: fixed !important;
+    top: -120%;
+    /* 默认藏在顶部之外 */
+    left: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 400px;
+    padding: 20px !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-color);
+    transition: top 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    background: white !important;
+  }
+
+  /* 菜单打开时的状态 */
+  .menu-open .sidebar {
+    top: 0 !important;
+  }
+
+  /* 3. 🌟 Sidebar 内部 Logo 切换 */
+  .desktop-only-logo {
+    display: none !important;
+  }
+
+  /* 隐藏大房子 Logo */
+  .mobile-only-brand {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sidebar .brand {
+    justify-content: flex-start !important;
+    padding: 10px 0 !important;
+    margin-bottom: 24px !important;
+  }
+
+  .sidebar-logo-icon {
+    height: 32px !important;
+    width: auto;
+  }
+
+  .brand-name {
+    font-size: 19px;
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  /* 4. 关闭按钮与页脚 */
+  .mobile-close-btn {
+    display: flex !important;
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #f1f5f9;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .sidebar-footer {
+    display: none !important;
+  }
+
+  /* 5. 背景遮罩 */
+  .menu-overlay {
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+    z-index: 1000;
+  }
+
+  /* 6. 内容区间距修正：防止内容钻到顶部条下面 */
+  .content {
+    margin-left: 0 !important;
+    padding-top: 84px !important;
+    /* 64px 顶栏 + 20px 间距 */
+    width: 100% !important;
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Content Area */
 .content {
@@ -396,4 +557,205 @@ body {
 .empty-state p {
   font-size: 16px;
   font-weight: 500;
+}
+
+
+
+/* ============================================================
+   CALENDAR UNIQUE STYLES (最终加固版)
+   ============================================================ */
+
+.calendar-page-unique {
+  padding: 40px 60px;
+  width: 100%;
+  display: block !important;
+  background-color: #f8fafc;
+}
+
+/* --- 1. Header 布局：解决按钮拉伸 --- */
+.page-header-unique {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  margin-bottom: 32px;
+  width: 100% !important;
+}
+
+.btn-create-unique {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px !important;
+  background-color: var(--primary) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  flex: none !important;
+  width: fit-content !important;
+}
+
+/* --- 2. 主网格布局：强制底部对齐 --- */
+.calendar-main-grid-unique {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 32px !important;
+  align-items: stretch !important;
+  /* 🌟 核心：确保左右卡片高度一致 */
+  width: 100% !important;
+}
+
+.calendar-container-unique,
+.events-panel-unique {
+  background: white !important;
+  padding: 32px !important;
+  border-radius: 24px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.calendar-container-unique {
+  flex: 1.6 !important;
+}
+
+.events-panel-unique {
+  flex: 1 !important;
+  min-height: 500px !important;
+}
+
+/* 🌟 导航修复：箭头回到标题两侧 --- */
+.calendar-nav-unique {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 30px !important;
+  width: 100% !important;
+}
+
+.nav-btn-unique {
+  background: none !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  padding: 6px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.calendar-nav-unique h2 {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+}
+
+/* --- 3. 日历内部网格 --- */
+.calendar-weekday-row-unique,
+.calendar-days-grid-unique {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr) !important;
+  gap: 12px !important;
+  width: 100% !important;
+}
+
+.day-cell-unique {
+  aspect-ratio: 1 / 1 !important;
+  /* 🌟 保持正方形 */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* 🌟 选中状态：紫色实心圆 🌟 */
+.day-cell-unique.is-selected .day-number-unique {
+  background-color: var(--primary) !important;
+  color: white !important;
+  width: 38px;
+  height: 38px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+/* 🌟 今日状态（未选中时）：淡紫色边框标记 🌟 */
+.day-cell-unique.is-today:not(.is-selected) .day-number-unique {
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+  border: 2px solid var(--primary-light) !important;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+/* --- 4. 右侧面板内部样式补完 --- */
+.panel-header-unique {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 24px !important;
+  padding-bottom: 12px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.panel-header-unique h3 {
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+}
+
+.add-icon-btn-unique {
+  background: var(--primary-light) !important;
+  border: none !important;
+  padding: 6px !important;
+  border-radius: 8px !important;
+  color: var(--primary) !important;
+  cursor: pointer !important;
+}
+
+.empty-state-unique {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #94a3b8 !important;
+}
+
+/* 事件项样式 */
+.event-item-card-unique {
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #f1f5f9;
+}
+
+.event-meta-unique {
+  font-size: 11px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.event-dot-unique {
+  position: absolute;
+  bottom: 4px;
+  width: 4px;
+  height: 4px;
+  background-color: var(--primary);
+  border-radius: 50%;
 }
