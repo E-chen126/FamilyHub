@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Plus, Clock, Users, X } from 'lucide-react';
+import TaskModal from '../components/TaskModal';
 
-export default function CalendarPage({ events = [], setEvents }) {
+export default function CalendarPage({ events = [], setEvents,members }) {
   const today = new Date();
   const [viewDate, setViewDate] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [selectedDate, setSelectedDate] = useState(today);
 
-  // 🌟 控制弹窗的状态
+  // modal state
   const [showModal, setShowModal] = useState(false);
 
   const viewYear = viewDate.getFullYear();
@@ -21,29 +22,17 @@ export default function CalendarPage({ events = [], setEvents }) {
     d1.getMonth() === d2.getMonth() &&
     d1.getDate() === d2.getDate();
 
-  // 格式化日期为 YYYY-MM-DD
+  // yyyymmdd
   const formatDate = (date) => {
     const d = new Date(date);
-    return d.toLocaleDateString('en-CA'); // 输出 YYYY-MM-DD
+    return d.toLocaleDateString('en-CA'); 
   };
 
   const dayEvents = events.filter(e => e.date === formatDate(selectedDate));
 
-  // 🌟 处理创建新事件
-  const handleCreateEvent = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-
-    const newEvent = {
-      id: Date.now(),
-      title: formData.get('title'),
-      date: formData.get('date'),
-      startTime: formData.get('startTime') || "All day",
-      member: formData.get('member'),
-      color: "#8e53ff" // 日历默认紫色
-    };
-
-    setEvents([...events, newEvent]); // 🌟 更新全局数据
+  // add event handler
+  const handleCreateEvent = (newEvent) => {
+    setEvents([...events, newEvent]);
     setShowModal(false);
   };
 
@@ -54,7 +43,7 @@ export default function CalendarPage({ events = [], setEvents }) {
           <h1>Calendar</h1>
           <p className="subtitle-unique">Manage family events and activities</p>
         </div>
-        {/* 🌟 顶部按钮点击工作 */}
+        
         <button className="btn-create-unique" onClick={() => setShowModal(true)}>
           <Plus size={18} /> New Event
         </button>
@@ -81,8 +70,11 @@ export default function CalendarPage({ events = [], setEvents }) {
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1;
               const dateObj = new Date(viewYear, viewMonth, day);
+              const dateStr = formatDate(dateObj); //yyyy-mm-dd
               const isSelected = isSameDay(dateObj, selectedDate);
               const isToday = isSameDay(dateObj, today);
+
+              const dayEventsForDot = events.filter(e => e.date === dateStr);
 
               return (
                 <div
@@ -91,8 +83,16 @@ export default function CalendarPage({ events = [], setEvents }) {
                   onClick={() => setSelectedDate(dateObj)}
                 >
                   <span className="day-number-unique">{day}</span>
-                  {/* 🌟 渲染小圆点提示该天有事件 */}
-                  {events.some(e => e.date === formatDate(dateObj)) && <div className="event-dot-unique"></div>}
+                  
+                  <div className="event-dots-container-unique">
+                    {dayEventsForDot.map((e) => (
+                      <div
+                        key={e.id}
+                        className="event-dot-unique"
+                        style={{ backgroundColor: e.color }}
+                      ></div>
+                    ))}
+                  </div>
                 </div>
               );
             })}
@@ -102,7 +102,7 @@ export default function CalendarPage({ events = [], setEvents }) {
         <section className="events-panel-unique">
           <div className="panel-header-unique">
             <h3>{selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</h3>
-            {/* 🌟 面板小加号点击工作 */}
+            
             <button className="add-icon-btn-unique" onClick={() => setShowModal(true)}><Plus size={16} /></button>
           </div>
           <div className="event-list-unique">
@@ -122,44 +122,14 @@ export default function CalendarPage({ events = [], setEvents }) {
         </section>
       </div>
 
-      {/* 🌟 弹窗代码：复用 Home 风格 */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2>New Calendar Event</h2>
-              <X className="close-icon" onClick={() => setShowModal(false)} />
-            </div>
-            <form onSubmit={handleCreateEvent}>
-              <div className="input-group">
-                <label>Title</label>
-                <input name="title" required placeholder="Event name" />
-              </div>
-              <div className="input-group">
-                <label>Date</label>
-                {/* 🌟 默认填入选中的日期 */}
-                <input type="date" name="date" defaultValue={formatDate(selectedDate)} required />
-              </div>
-              <div className="input-group">
-                <label>Start Time</label>
-                <input type="time" name="startTime" />
-              </div>
-              <div className="input-group">
-                <label>Assigned To</label>
-                <select name="member">
-                  <option>Emma</option>
-                  <option>Max</option>
-                  <option>Family</option>
-                </select>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn-cancel" onClick={() => setShowModal(false)}>Cancel</button>
-                <button type="submit" className="btn-create">Create Event</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* modal */}
+      <TaskModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onCreate={handleCreateEvent}
+        type="event"
+        members={members}
+      />
     </div>
   );
 }

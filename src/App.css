@@ -1,4 +1,6 @@
-
+/* ============================================================
+  Global Styles & Variables
+   ============================================================ */
 :root {
   --primary: #6366f1;
   --primary-light: #f3f0ff;
@@ -22,15 +24,13 @@ body {
   line-height: 1.5;
 }
 
-
 .app-container {
   display: flex;
   min-height: 100vh;
 }
 
-
 /* ============================================================
-   1. 桌面端核心样式 (Desktop - Default) 
+  Desktop - Default Sidebar Styles
    ============================================================ */
 
 .sidebar {
@@ -46,7 +46,6 @@ body {
   top: 0;
   transition: all 0.3s ease;
   z-index: 1001;
-  /* 确保层级足够高 */
 }
 
 .brand {
@@ -58,15 +57,14 @@ body {
   position: relative;
 }
 
-/* 🌟 控制 Sidebar 内部不同 Logo 的显隐 */
-.mobile-only-brand {
-  display: none;
-}
-
 .desktop-only-logo {
   width: 200px;
   height: auto;
   object-fit: contain;
+}
+
+.mobile-only-brand {
+  display: none;
 }
 
 .nav-list {
@@ -97,7 +95,6 @@ body {
   font-weight: 600;
 }
 
-/* 🌟 桌面端彻底隐藏移动组件 */
 .mobile-top-bar,
 .mobile-close-btn,
 .mobile-hamburger-trigger,
@@ -105,13 +102,66 @@ body {
   display: none !important;
 }
 
+
 /* ============================================================
-   📱 移动端/平板端响应式样式 (Max-width: 1024px)
+  Mobile Responsive
+   ============================================================ */
+
+@media (max-width: 1200px) {
+
+  .content,
+  .calendar-page-unique {
+    padding: 40px 24px 40px !important;
+    max-width: 100% !important;
+  }
+
+
+  .dashboard-main-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+
+
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+  }
+
+
+  .calendar-main-grid-unique {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .calendar-container-unique,
+  .events-panel-unique {
+    width: 100% !important;
+    flex: none !important;
+    min-height: auto !important;
+  }
+
+  .calendar-days-grid-unique {
+    gap: 8px !important;
+  }
+
+  .day-cell-unique {
+    max-height: 80px;
+  }
+
+  .main-header h1,
+  .calendar-nav-unique h2 {
+    font-size: 26px !important;
+  }
+}
+
+
+/* ============================================================
+  Mobile Responsive Styles (max-width: 1024px)
    ============================================================ */
 
 @media (max-width: 1024px) {
 
-  /* 1. 顶部导航条 */
   .mobile-top-bar {
     display: flex !important;
     position: fixed;
@@ -152,11 +202,9 @@ body {
     cursor: pointer;
   }
 
-  /* 2. 🌟 核心修复：Sidebar 变身下拉帘 */
   .sidebar {
     position: fixed !important;
     top: -120%;
-    /* 默认藏在顶部之外 */
     left: 0 !important;
     width: 100% !important;
     height: auto !important;
@@ -168,17 +216,15 @@ body {
     background: white !important;
   }
 
-  /* 菜单打开时的状态 */
   .menu-open .sidebar {
     top: 0 !important;
   }
 
-  /* 3. 🌟 Sidebar 内部 Logo 切换 */
+  /* sidebar logo switch */
   .desktop-only-logo {
     display: none !important;
   }
 
-  /* 隐藏大房子 Logo */
   .mobile-only-brand {
     display: flex !important;
     align-items: center;
@@ -202,7 +248,6 @@ body {
     color: #1e293b;
   }
 
-  /* 4. 关闭按钮与页脚 */
   .mobile-close-btn {
     display: flex !important;
     position: absolute;
@@ -218,7 +263,6 @@ body {
     display: none !important;
   }
 
-  /* 5. 背景遮罩 */
   .menu-overlay {
     display: block !important;
     position: fixed;
@@ -228,34 +272,30 @@ body {
     z-index: 1000;
   }
 
-  /* 6. 内容区间距修正：防止内容钻到顶部条下面 */
   .content {
     margin-left: 0 !important;
     padding-top: 84px !important;
-    /* 64px 顶栏 + 20px 间距 */
     width: 100% !important;
+  }
+
+  .content,
+  .activities-page {
+    padding-top: 100px !important;
+  }
+
+  .btn-create {
+    align-self: center !important;
+    padding: 8px 16px !important;
   }
 }
 
 
 
+/* ============================================================
+ content area styles (common for both Home and Calendar)
+   ============================================================ */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Content Area */
 .content {
   flex: 1;
   padding: 40px 60px;
@@ -263,8 +303,13 @@ body {
 }
 
 .main-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
   margin-bottom: 30px;
+  width: 100%;
 }
+
 
 .main-header h1 {
   font-size: 32px;
@@ -541,6 +586,8 @@ body {
   transform: translateY(0);
 }
 
+
+
 /* --- No upcoming events --- */
 .empty-state {
   display: flex;
@@ -562,7 +609,7 @@ body {
 
 
 /* ============================================================
-   CALENDAR UNIQUE STYLES (最终加固版)
+   CALENDAR UNIQUE STYLES
    ============================================================ */
 
 .calendar-page-unique {
@@ -572,7 +619,6 @@ body {
   background-color: #f8fafc;
 }
 
-/* --- 1. Header 布局：解决按钮拉伸 --- */
 .page-header-unique {
   display: flex !important;
   justify-content: space-between !important;
@@ -596,13 +642,11 @@ body {
   width: fit-content !important;
 }
 
-/* --- 2. 主网格布局：强制底部对齐 --- */
 .calendar-main-grid-unique {
   display: flex !important;
   flex-direction: row !important;
   gap: 32px !important;
   align-items: stretch !important;
-  /* 🌟 核心：确保左右卡片高度一致 */
   width: 100% !important;
 }
 
@@ -625,7 +669,6 @@ body {
   min-height: 500px !important;
 }
 
-/* 🌟 导航修复：箭头回到标题两侧 --- */
 .calendar-nav-unique {
   display: flex !important;
   flex-direction: row !important;
@@ -653,7 +696,6 @@ body {
   margin: 0 !important;
 }
 
-/* --- 3. 日历内部网格 --- */
 .calendar-weekday-row-unique,
 .calendar-days-grid-unique {
   display: grid !important;
@@ -664,16 +706,15 @@ body {
 
 .day-cell-unique {
   aspect-ratio: 1 / 1 !important;
-  /* 🌟 保持正方形 */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   border-radius: 12px;
   cursor: pointer;
   position: relative;
+  min-height: 50px;
 }
 
-/* 🌟 选中状态：紫色实心圆 🌟 */
 .day-cell-unique.is-selected .day-number-unique {
   background-color: var(--primary) !important;
   color: white !important;
@@ -687,7 +728,6 @@ body {
   z-index: 2;
 }
 
-/* 🌟 今日状态（未选中时）：淡紫色边框标记 🌟 */
 .day-cell-unique.is-today:not(.is-selected) .day-number-unique {
   color: var(--primary) !important;
   font-weight: 700 !important;
@@ -700,7 +740,7 @@ body {
   border-radius: 50%;
 }
 
-/* --- 4. 右侧面板内部样式补完 --- */
+
 .panel-header-unique {
   display: flex !important;
   justify-content: space-between !important;
@@ -734,7 +774,7 @@ body {
   color: #94a3b8 !important;
 }
 
-/* 事件项样式 */
+
 .event-item-card-unique {
   padding: 16px;
   background: #f8fafc;
@@ -751,11 +791,87 @@ body {
   gap: 6px;
 }
 
-.event-dot-unique {
+.event-dots-container-unique {
   position: absolute;
-  bottom: 4px;
-  width: 4px;
-  height: 4px;
-  background-color: var(--primary);
+    bottom: 6px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    pointer-events: none;
+}
+
+
+.event-dot-unique {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.day-cell-unique.is-selected .event-dot-unique {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+
+
+/* Activities*/
+.activity-card {
+  background: white;
+  padding: 20px 24px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+  margin-bottom: 16px;
+}
+
+.activity-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+#special-add-btn {
+  width: fit-content;
+  min-width: 120px;
+  max-width: 160px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  align-self: center;
+  padding: 0 15px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: white;
+  padding: 32px;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }

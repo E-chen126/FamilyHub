@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Calendar, CheckSquare, ShoppingCart, Users, Plus, X } from 'lucide-react'
+import { Calendar, CheckSquare, ShoppingCart, Users, Plus} from 'lucide-react'
+import TaskModal from '../components/TaskModal'
 
 // four stat card component
 function StatCard({ title, count, bgColor, icon: Icon, iconColor }) {
@@ -17,7 +18,7 @@ function StatCard({ title, count, bgColor, icon: Icon, iconColor }) {
 }
 
 // 
-export default function Home({ tasks, setTasks, events, setEvents, setActiveTab }) {
+export default function Home({ tasks, setTasks, events, setEvents, setActiveTab, members, shoppingItems }) {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState('activity');
 
@@ -25,24 +26,9 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab 
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
-  // create new event or activity
+  
  
-  const handleCreate = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-
-    const newItem = {
-      id: Date.now(),
-      title: formData.get('title'),
-      date: formData.get('date'),
-      
-      startTime: formData.get('startTime') || null, 
-      endTime: modalType === 'activity' ? (formData.get('endTime') || null) : null,
-      
-      member: formData.get('member'),
-      color: modalType === 'event' ? "#8e53ff" : "#febc2e"
-    };
-
+  const handleItemCreated = (newItem) => {
     if (modalType === 'event') {
       setEvents([...events, newItem]);
     } else {
@@ -50,6 +36,10 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab 
     }
     setShowModal(false);
   };
+
+  const pendingShoppingCount = shoppingItems ? shoppingItems.filter(i => !i.purchased).length : 0;
+
+
 
   return (
     <div className="p-8">
@@ -62,8 +52,8 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab 
       <section className="stat-grid">
         <StatCard title="Upcoming Events" count={events.length} bgColor="#f3f0ff" icon={Calendar} iconColor="#a855f7" />
         <StatCard title="Activities" count={tasks.length} bgColor="#e0f2fe" icon={CheckSquare} iconColor="#0ea5e9" />
-        <StatCard title="Shopping Items" count="3" bgColor="#fef9c3" icon={ShoppingCart} iconColor="#eab308" />
-        <StatCard title="Family Members" count="4" bgColor="#dcfce7" icon={Users} iconColor="#22c55e" />
+        <StatCard title="Shopping Items" count={pendingShoppingCount} bgColor="#fef9c3" icon={ShoppingCart} iconColor="#eab308" />
+        <StatCard title="Family Members" count={members ? members.length : 0} bgColor="#dcfce7" icon={Users} iconColor="#22c55e" />
       </section>
 
       <div className="dashboard-main-grid">
@@ -71,7 +61,9 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab 
         <section className="column-section">
           <div className="section-header">
             <h2 className="clickable-title" onClick={() => setActiveTab('Calendar')}>Upcoming Events</h2>
-            <button className="add-btn-small" onClick={() => { setModalType('event'); setShowModal(true); }}><Plus size={14} /> Add</button>
+            <button className="add-btn-small" onClick={() => { setModalType('event'); setShowModal(true); }}>
+              <Plus size={14} /> Add
+            </button>
           </div>
           <div className="item-list">
             {events.length === 0 ? (
@@ -82,7 +74,19 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab 
                   <div className="check-circle" onClick={() => setEvents(events.filter(e => e.id !== item.id))}></div>
                   <div className="task-details">
                     <h4>{item.title}</h4>
-                    <p>📅 {item.date} • ⏰ {item.startTime} • 👤 {item.member}</p>
+                    <p>
+                      <Calendar size={14} className="sub-icon" />
+                      <span>{item.date}</span>
+                      {item.startTime && (
+                        <>
+                          <span className="separator"> @ </span>
+                          <span>{item.startTime}</span>
+                        </>
+                      )}
+                      <span className="separator"> • </span>
+                      <Users size={14} className="sub-icon" />
+                      <span>{item.member}</span>
+                    </p>
                   </div>
                 </div>
               ))
@@ -136,36 +140,14 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab 
         </section>
       </div>
 
-      {/* Add/Create */}
-      {showModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h2>New {modalType === 'event' ? 'Event' : 'Activity'}</h2>
-              <X className="close-icon" onClick={() => setShowModal(false)} />
-            </div>
-            <form onSubmit={handleCreate}>
-              <div className="input-group"><label>Title</label><input name="title" required /></div>
-              <div className="input-group"><label>Date</label><input type="date" name="date" required /></div>
-              <div className="input-row">
-                <div className="input-group">
-                  <label>Start Time</label>
-                  <input type="time" name="startTime"/>
-                  </div>
-                {modalType === 'activity' && <div className="input-group"><label>End Time</label><input type="time" name="endTime" /></div>}
-              </div>
-              <div className="input-group">
-                <label>Assigned To</label>
-                <select name="member"><option>Emma</option><option>Max</option></select>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn-cancel" onClick={() => setShowModal(false)}>Cancel</button>
-                <button type="submit" className="btn-create">Create</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      {/* Add*/}
+      <TaskModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onCreate={handleItemCreated}
+        type={modalType}
+        members={members}
+      />
     </div>
   )
 }

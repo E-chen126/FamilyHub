@@ -16,23 +16,22 @@ function Sidebar({ activeTab, setActiveTab, isMenuOpen, setIsMenuOpen }) {
     <aside className={`sidebar ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className="sidebar-top">
 
-        {/* 🌟 修正：移除内联样式，改用 class 控制响应式切换 */}
         <div className="brand">
 
-          {/* 1. 桌面端显示的大 Logo */}
+          
           <img
             src={logoUrl}
             alt="FamilyHub Logo"
             className="desktop-only-logo"
           />
 
-          {/* 2. 移动端显示的图标 + 文字组合 */}
+          
           <div className="mobile-only-brand">
             <img src={subLogoUrl} alt="FH" className="sidebar-logo-icon" />
             <span className="brand-name">FamilyHub</span>
           </div>
 
-          {/* 3. 移动端关闭按钮 */}
+         
           <button
             className="mobile-close-btn"
             onClick={() => setIsMenuOpen(false)}
