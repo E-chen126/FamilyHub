@@ -59,7 +59,7 @@ const Family = ({ members, setMembers }) => {
         
         <div style={{
           width: '64px', height: '64px', borderRadius: '16px', backgroundColor: m.color,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', // 🌟 关键：水平垂直居中
+          display: 'flex', alignItems: 'center', justifyContent: 'center', 
           color: 'white', fontSize: '24px', fontWeight: 'bold',
           boxShadow: `0 8px 16px ${m.color}33`, flexShrink: 0
         }}>
@@ -95,7 +95,7 @@ const Family = ({ members, setMembers }) => {
   );
 
   return (
-    <div className="content">
+    <div className="familyPage">
       <header className="main-header">
         <div>
           <h1>Family Members</h1>
@@ -110,7 +110,7 @@ const Family = ({ members, setMembers }) => {
       
       <div style={{ marginTop: '32px' }}>
         <h2 style={{ fontSize: '13px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '16px' }}>Parents</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '24px',justifyContent: 'center' }}>
           {members.filter(m => m.role === 'Parent').map(renderMemberCard)}
         </div>
 

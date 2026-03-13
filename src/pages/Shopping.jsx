@@ -26,7 +26,7 @@ const Shopping = ({ items, setItems }) => {
   const purchasedItems = items.filter(i => i.purchased);
 
   return (
-    <div className="content">
+    <div className="shoppingPage">
       <header className="main-header">
         <div>
           <h1>Shopping List</h1>
