@@ -7,7 +7,7 @@
   --bg-body: #f8fafc;
   --white: #ffffff;
   --text-main: #1e293b;
-  --text-muted: #94a3b8;
+  --text-muted: #475569;
   --border-color: #e2e8f0;
 }
 
@@ -140,6 +140,17 @@ body {
 .date-text {
   color: var(--text-muted);
 }
+
+.empty-state p {
+  color: #334155;
+  /* 确保空状态的文字也清晰可见 */
+}
+
+.sub-icon {
+  color: #64748b;
+  /* 图标颜色也稍微加深 */
+}
+
 
 /* ============================================================
    Stat cards / dashboard layout

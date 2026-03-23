@@ -61,7 +61,11 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab,
         <section className="column-section">
           <div className="section-header">
             <h2 className="clickable-title" onClick={() => setActiveTab('Calendar')}>Upcoming Events</h2>
-            <button className="add-btn-small" onClick={() => { setModalType('event'); setShowModal(true); }}>
+            <button 
+            className="add-btn-small" 
+            onClick={() => { setModalType('event'); 
+            setShowModal(true); }}
+            aria-label={`Add new ${modalType}`}>
               <Plus size={14} /> Add
             </button>
           </div>
@@ -98,7 +102,11 @@ export default function Home({ tasks, setTasks, events, setEvents, setActiveTab,
         <section className="column-section">
           <div className="section-header">
             <h2 className="clickable-title" onClick={() => setActiveTab('Activities')}>Children Activities</h2>
-            <button className="add-btn-small" onClick={() => { setModalType('activity'); setShowModal(true); }}>
+            <button 
+              className="add-btn-small" 
+              onClick={() => { setModalType('activity'); setShowModal(true); }}
+              aria-label={`Add new ${modalType}`}
+            >
               <Plus size={14} /> Add
             </button>
           </div>
