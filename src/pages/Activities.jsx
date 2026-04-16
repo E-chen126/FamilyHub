@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Plus, CheckCircle, Circle, Trash2, Clock, User } from 'lucide-react';
 import TaskModal from '../components/TaskModal'; 
 
-const Activities = ({ tasks, toggleTask, deleteTask, addTask }) => {
+const Activities = ({ tasks, toggleTask, deleteTask, addTask, members }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const pendingTasks = tasks.filter(t => !t.completed).length;
@@ -55,6 +55,7 @@ const Activities = ({ tasks, toggleTask, deleteTask, addTask }) => {
         onClose={() => setIsModalOpen(false)}
         onCreate={addTask}
         type="activity"
+        members={members}
       />
     </div>
   );
